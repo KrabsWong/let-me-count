@@ -12,6 +12,36 @@
     "type": "git",
     "url": "https://github.com/KrabsWong/let-me-count"
   },
+  "engines": {
+    "vscode": "^1.84.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "word-counter.refresh",
+        "title": "%command.refresh.title%"
+      }
+    ]
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.84.0",
+    "@types/node": "16.x",
+    "eslint": "^8.47.0",
+    "typescript": "^5.1.6"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test": "node ./test/runTest.js",
+    "package": "vsce package --no-yarn"
+  },
   "keywords": [
     "word count",
     "character count",
@@ -19,11 +49,10 @@
     "productivity",
     "multilingual"
   ],
-  "engines": {
-    "vscode": "^1.84.0"
-  },
-  "categories": [
-    "Other"
-  ],
-  "icon": "images/icon.png"
+  "icon": "images/icon.png",
+  "l10n": "./l10n",
+  "files": [
+    "extension.js",
+    "l10n/**"
+  ]
 }
