@@ -2,6 +2,8 @@
 
 A simple and efficient word and character counter for Visual Studio Code, supporting multiple languages including English, Chinese, and Japanese.
 
+<img width="606" alt="image" src="https://github.com/user-attachments/assets/2019091b-e6df-480c-ad45-8a1fc51a1262" />
+
 ## Features
 
 - Real-time word and character counting
