@@ -2,7 +2,7 @@
   "name": "let-me-count",
   "displayName": "Let me count",
   "description": "Your friendly companion that counts words and characters, supporting multiple languages",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "publisher": "KrabsWong",
   "author": {
     "name": "KrabsWong"
@@ -22,14 +22,6 @@
     "onStartupFinished"
   ],
   "main": "./extension.js",
-  "contributes": {
-    "commands": [
-      {
-        "command": "word-counter.refresh",
-        "title": "%command.refresh.title%"
-      }
-    ]
-  },
   "devDependencies": {
     "@types/vscode": "^1.84.0",
     "@types/node": "16.x",

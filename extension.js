@@ -2,10 +2,9 @@ const vscode = require('vscode');
 const path = require('path');
 const fs = require('fs');
 
-let statusBarItem;
-
 function activate(context) {
   // 手动加载本地化文件
+  let getLocalizedString;
   try {
     const currentLanguage = vscode.env.language;
     const l10nPath = path.join(__dirname, 'l10n');
@@ -16,72 +15,51 @@ function activate(context) {
     }
 
     const l10nData = JSON.parse(fs.readFileSync(l10nFile, 'utf8'));
-    global.getLocalizedString = (key) => {
+    getLocalizedString = (key) => {
       return l10nData[key] || key;
     };
   } catch (error) {
     console.error('Failed to load l10n:', error);
+    getLocalizedString = (key) => key;
   }
 
   // 创建状态栏项
-  statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
+  const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
   context.subscriptions.push(statusBarItem);
 
-  // 更新计数的函数
-  function updateWordCount() {
-    const editor = vscode.window.activeTextEditor;
-    if (!editor) {
-      statusBarItem.hide();
-      return;
-    }
-
-    const text = editor.document.getText();
-
-    // 计算总字符数（包括空格和换行符）
-    const totalChars = text.length;
-
-    // 计算单词数（对于英文）或字符数（对于中文）
-    let wordCount = 0;
-
-    // 使用正则表达式匹配中文字符和英文单词
-    const matches = text.match(/[\u4e00-\u9fa5]|[a-zA-Z]+/g);
-    if (matches) {
-      wordCount = matches.length;
-    }
-
-    // 获取本地化的标签文本
-    const charsLabel = getLocalizedString('status.chars');
-    const wordsLabel = getLocalizedString('status.words');
-
-    // 更新状态栏
-    statusBarItem.text = `${charsLabel}: ${totalChars} | ${wordsLabel}: ${wordCount}`;
-    statusBarItem.show();
-  }
-
-  // 注册命令
-  let disposable = vscode.commands.registerCommand('word-counter.refresh', () => {
-    updateWordCount();
-  });
-  context.subscriptions.push(disposable);
-
-  // 监听文本编辑器变化
-  context.subscriptions.push(
-    vscode.window.onDidChangeActiveTextEditor(() => {
-      updateWordCount();
-    })
-  );
-
-  // 监听文档变化
+  // 添加文本变化事件监听器
   context.subscriptions.push(
     vscode.workspace.onDidChangeTextDocument(event => {
       if (event.document === vscode.window.activeTextEditor?.document) {
-        updateWordCount();
+        updateWordCount(statusBarItem, getLocalizedString);
       }
     })
   );
 
+  // 添加活动编辑器变化事件监听器
+  context.subscriptions.push(
+    vscode.window.onDidChangeActiveTextEditor(() => {
+      updateWordCount(statusBarItem, getLocalizedString);
+    })
+  );
+
   // 初始更新
-  updateWordCount();
+  updateWordCount(statusBarItem, getLocalizedString);
+}
+
+function updateWordCount(statusBarItem, getLocalizedString) {
+  const editor = vscode.window.activeTextEditor;
+
+  if (editor) {
+    const text = editor.document.getText();
+    const wordCount = text.trim().split(/\s+/).length;
+    const charCount = text.length;
+
+    statusBarItem.text = `${wordCount} ${getLocalizedString('status.words')} | ${charCount} ${getLocalizedString('status.chars')}`;
+    statusBarItem.show();
+  } else {
+    statusBarItem.hide();
+  }
 }
 
 function deactivate() {
