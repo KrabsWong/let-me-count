@@ -2,7 +2,7 @@
   "name": "let-me-count",
   "displayName": "Let me count",
   "description": "Your friendly companion that counts words and characters, supporting multiple languages",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "publisher": "KrabsWong",
   "author": {
     "name": "KrabsWong"
