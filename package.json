@@ -2,7 +2,7 @@
   "name": "let-me-count",
   "displayName": "Let me count",
   "description": "Your friendly companion that counts words and characters, supporting multiple languages",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "publisher": "KrabsWong",
   "author": {
     "name": "KrabsWong"
@@ -41,7 +41,7 @@
     "productivity",
     "multilingual"
   ],
-  "icon": "images/icon.png",
+  "icon": "images/let-me-count.png",
   "l10n": "./l10n",
   "files": [
     "extension.js",
